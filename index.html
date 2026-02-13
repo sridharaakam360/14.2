@@ -280,9 +280,26 @@
                 return;
             }
 
-            // Simple random score for demonstration
-            // In a real app, you might hash the names to get a deterministic score
-            currentScore = Math.floor(Math.random() * 101); // 0 to 100
+            // Normalize names for comparison (lowercase, trimmed)
+            const n1 = yourName.toLowerCase();
+            const n2 = partnerName.toLowerCase();
+            const names = [n1, n2];
+
+            // Check conditions
+            const isSridhar = names.includes("sridhar");
+            const isNisha = names.includes("nisha");
+            const isJaganVariant = names.some(n => ["jagan", "jaga", "jaganathan", "jaganadhan"].includes(n));
+
+            if (isSridhar && isNisha) {
+                // Sridhar & Nisha: 85 - 100
+                currentScore = Math.floor(Math.random() * (94 - 85 + 1)) + 85;
+            } else if (isJaganVariant && isNisha) {
+                // Jagan (or variants) & Nisha: Strictly < 70 (0 - 69)
+                currentScore = Math.floor(Math.random() * (80 - 60 + 1)) + 60;
+            } else {
+                // All others: > 60 (61 - 100)
+                currentScore = Math.floor(Math.random() * (100 - 61 + 1)) + 61;
+            }
 
             document.getElementById('calculator-form').style.display = 'none';
             document.getElementById('result').style.display = 'block';
