@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Calculator ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap');
+
+        :root {
+            --primary-color: #ff4b6e;
+            --secondary-color: #ff8fa3;
+            --background-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-color: #4a4a4a;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-image: var(--background-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #666;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        button.calculate-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 75, 110, 0.3);
+        }
+
+        button.calculate-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(255, 75, 110, 0.4);
+        }
+
+        button.calculate-btn:active {
+            transform: scale(0.98);
+        }
+
+        .result-section {
+            display: none;
+            margin-top: 2rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .score-display {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 1rem 0;
+            display: block;
+        }
+
+        .heart-icon {
+            font-size: 2rem;
+            animation: heartbeat 1.5s infinite;
+            display: inline-block;
+        }
+
+        .rating-section {
+            margin-top: 1.5rem;
+            border-top: 1px solid #eee;
+            padding-top: 1.5rem;
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 0.5rem;
+        }
+
+        .star {
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #ccc;
+            transition: color 0.2s;
+        }
+
+        .star:hover,
+        .star.active {
+            color: var(--primary-color);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+
+            15% {
+                transform: scale(1.3);
+            }
+
+            30% {
+                transform: scale(1);
+            }
+
+            45% {
+                transform: scale(1.15);
+            }
+
+            60% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Love Calculator <span class="heart-icon">❤️</span></h1>
+
+        <div id="calculator-form">
+            <div class="input-group">
+                <label for="yourName">Your Name</label>
+                <input type="text" id="yourName" placeholder="Enter your name" required>
+            </div>
+
+            <div class="input-group">
+                <label for="partnerName">Partner's Name</label>
+                <input type="text" id="partnerName" placeholder="Enter partner's name" required>
+            </div>
+
+            <div class="input-group">
+                <label for="likes">What do you like about them?</label>
+                <textarea id="likes" rows="3"
+                    style="width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-family: inherit; font-size: 1rem; box-sizing: border-box; resize: vertical;"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label for="dislikes">What do you dislike about them?</label>
+                <textarea id="dislikes" rows="3"
+                    style="width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-family: inherit; font-size: 1rem; box-sizing: border-box; resize: vertical;"></textarea>
+            </div>
+
+            <button class="calculate-btn" onclick="calculateLove()">Calculate Love</button>
+        </div>
+
+        <div id="result" class="result-section">
+            <h3>Love Score</h3>
+            <span class="score-display" id="scoreValue">0%</span>
+            <p id="loveMessage">Calculating...</p>
+
+            <div class="rating-section" id="ratingArea">
+                <p>Rate this result:</p>
+                <div class="stars">
+                    <span class="star" onclick="rateResult(1)">♥</span>
+                    <span class="star" onclick="rateResult(2)">♥</span>
+                    <span class="star" onclick="rateResult(3)">♥</span>
+                    <span class="star" onclick="rateResult(4)">♥</span>
+                    <span class="star" onclick="rateResult(5)">♥</span>
+                </div>
+                <p id="ratingFeedback" class="hidden"
+                    style="color: var(--primary-color); font-weight: 500; margin-top: 10px;">Thanks for rating!</p>
+            </div>
+
+            <button class="calculate-btn" onclick="resetCalculator()"
+                style="margin-top: 20px; background-color: #6c757d; box-shadow: none;">Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Google Apps Script Web App URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxsdkUfxm8GBvn-UQNpWvdNqV_iowWQ5dE4LOdV3o3zGbcoI9N85SlypKSV-acF5zPbqw/exec';
+
+        window.saveToGoogleSheets = async (data) => {
+
+            try {
+                // Use no-cors mode for Google Apps Script simple POST
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                console.log("Request sent to Google Sheets");
+                return true;
+            } catch (e) {
+                console.error("Error saving to Google Sheets: ", e);
+                alert("Error saving to Google Sheets: " + e.message);
+                return false;
+            }
+        };
+    </script>
+
+    <script>
+        let currentScore = 0;
+
+        function calculateLove() {
+            const yourName = document.getElementById('yourName').value.trim();
+            const partnerName = document.getElementById('partnerName').value.trim();
+
+            if (!yourName || !partnerName) {
+                alert("Please enter both names!");
+                return;
+            }
+
+            // Simple random score for demonstration
+            // In a real app, you might hash the names to get a deterministic score
+            currentScore = Math.floor(Math.random() * 101); // 0 to 100
+
+            document.getElementById('calculator-form').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+
+            // Animate score
+            let displayScore = 0;
+            const scoreElement = document.getElementById('scoreValue');
+            const interval = setInterval(() => {
+                if (displayScore >= currentScore) {
+                    clearInterval(interval);
+                    setLoveMessage(currentScore);
+                } else {
+                    displayScore++;
+                    scoreElement.textContent = displayScore + "%";
+                }
+            }, 20);
+        }
+
+        function setLoveMessage(score) {
+            const messageEl = document.getElementById('loveMessage');
+            if (score > 85) messageEl.textContent = "Perfect Match! 🔥";
+            else if (score > 70) messageEl.textContent = "Great Chemistry! 💖";
+            else if (score > 50) messageEl.textContent = "Good Chance! 😊";
+            else messageEl.textContent = "It might be tough... 😅";
+        }
+
+        async function rateResult(rating) {
+            // Highlight stars
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+
+            // Show feedback
+            document.getElementById('ratingFeedback').classList.remove('hidden');
+
+            // Prepare data
+            const data = {
+                yourName: document.getElementById('yourName').value,
+                partnerName: document.getElementById('partnerName').value,
+                likes: document.getElementById('likes').value,
+                dislikes: document.getElementById('likes').value,
+                score: currentScore,
+                rating: rating,
+                timestamp: new Date().toISOString()
+            };
+
+            // Save to Google Sheets (if configured)
+            if (window.saveToGoogleSheets) {
+                await window.saveToGoogleSheets(data);
+            } else {
+                console.warn("Save function not found.");
+            }
+        }
+
+        function resetCalculator() {
+            document.getElementById('calculator-form').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+
+            // Reset inputs
+            document.getElementById('yourName').value = '';
+            document.getElementById('partnerName').value = '';
+            document.getElementById('likes').value = '';
+            document.getElementById('dislikes').value = '';
+
+            // Reset stars
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => star.classList.remove('active'));
+            document.getElementById('ratingFeedback').classList.add('hidden');
+        }
+    </script>
+
+</body>
+
+</html>
